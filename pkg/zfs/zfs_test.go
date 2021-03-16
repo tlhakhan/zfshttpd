@@ -137,18 +137,19 @@ func TestExistsByName(t *testing.T) {
 
 func TestExistsByGUID(t *testing.T) {
 
-  // get all filesystems
-  l, err := z.ListFilesystems()
+  // get zpool filesystem
+  fs, err := z.GetFilesystem(zpoolName)
   if err != nil {
-		t.Errorf("unable to get filesystems on %s, received %+v", z.Name, err)
+		t.Errorf("unable to get filesystem %s", zpoolName)
   }
 
-  // check all filesystems
-  for _, ds := range l {
-		if exists := z.ExistsByGUID(ds.GUID); !exists {
-			t.Errorf("dataset %q with guid %q doesn't exist", ds.Name, ds.GUID)
-		}
-	}
+  // check guid of zpool filesystem
+  {
+    guid := fs.GUID
+    if exists := z.ExistsByGUID(guid); !exists {
+      t.Errorf("filesystem %q with guid %q doesn't exist", fs.Name, guid)
+    }
+  }
 
 	// bogus guid case
 	{
