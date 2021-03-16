@@ -11,7 +11,7 @@ import (
 )
 
 type Zpool struct {
-        Name string
+	Name string
 }
 
 type Filesystem struct {
@@ -33,24 +33,24 @@ type Snapshots map[string]*Snapshot
 // New returns a new Zpool struct
 func New(zpool string) (z Zpool, err error) {
 
-        if ok := zpoolExists(zpool); !ok {
-                err := errors.New(fmt.Sprintf("zpool %q doesn't exist", zpool))
-                return z, err
-        }
+	if ok := zpoolExists(zpool); !ok {
+		err := errors.New(fmt.Sprintf("zpool %q doesn't exist", zpool))
+		return z, err
+	}
 
-        // set name
-        z.Name = zpool
-        return z, nil
+	// set name
+	z.Name = zpool
+	return z, nil
 
 }
 
 // zpoolExists checks if given zpool name exists on the system
 func zpoolExists(zpool string) bool {
-        err := exec.Command(zpoolPath, "get", "-H", "-o", "value", "name", zpool).Run()
-        if err != nil {
-                return false
-        }
-        return true
+	err := exec.Command(zpoolPath, "get", "-H", "-o", "value", "name", zpool).Run()
+	if err != nil {
+		return false
+	}
+	return true
 }
 
 // Snapshots will return an map of snapshots on the zpool
@@ -106,34 +106,34 @@ func (z *Zpool) CreateFilesystem(fs Filesystem) (Filesystem, error) {
 		return fs, errors.Errorf("filesystem %q cannot be created on zpool %q", fs.Name, z.Name)
 	}
 
-  // build command
-  var cmd *exec.Cmd
+	// build command
+	var cmd *exec.Cmd
 
-  // check if origin is not empty
-  // if origin is set then create new filesystem
-  // if origin is not set then create a clone of the origin
-  if len(fs.Origin) == 0 || fs.Origin == "-" {
-    cmd = exec.Command(zfsPath, "create", fs.Name)
-  } else {
-    cmd = exec.Command(zfsPath, "clone", fs.Origin, fs.Name)
-  }
+	// check if origin is not empty
+	// if origin is set then create new filesystem
+	// if origin is not set then create a clone of the origin
+	if len(fs.Origin) == 0 || fs.Origin == "-" {
+		cmd = exec.Command(zfsPath, "create", fs.Name)
+	} else {
+		cmd = exec.Command(zfsPath, "clone", fs.Origin, fs.Name)
+	}
 
-  // run command
-  if _, err := cmd.Output(); err != nil {
-    // known ways to fail
-    // 1. filesystem already exists
-    // 2. filesystem's parent path doesn't exist
-    // 3. zfs fails
-    return fs, errors.Wrapf(err, "unable to create filesystem %q", fs.Name)
-  }
+	// run command
+	if _, err := cmd.Output(); err != nil {
+		// known ways to fail
+		// 1. filesystem already exists
+		// 2. filesystem's parent path doesn't exist
+		// 3. zfs fails
+		return fs, errors.Wrapf(err, "unable to create filesystem %q", fs.Name)
+	}
 
-  // retrieve the newly created filesystem
-  n, err := z.GetFilesystem(fs.Name)
-  if err != nil {
-    return fs, errors.Wrapf(err, "unable to retrieve filesystem %q after creation", fs.Name)
-  }
+	// retrieve the newly created filesystem
+	n, err := z.GetFilesystem(fs.Name)
+	if err != nil {
+		return fs, errors.Wrapf(err, "unable to retrieve filesystem %q after creation", fs.Name)
+	}
 
-  return n, nil
+	return n, nil
 }
 
 // CreateSnapshot creates a snapshot on the filesystem.
@@ -144,27 +144,26 @@ func (z *Zpool) CreateSnapshot(snapshotName string) (snap Snapshot, err error) {
 		return snap, errors.Errorf("snapshot %q cannot be created on zpool %q", snapshotName, z.Name)
 	}
 
-  // build command
-  cmd := exec.Command(zfsPath, "snapshot", snapshotName)
+	// build command
+	cmd := exec.Command(zfsPath, "snapshot", snapshotName)
 
-  // run command
-  if _, err := cmd.Output(); err != nil {
-    // known ways to fail
-    // 1. snapshot already exists
-    // 2. snapshot on non-existing filesystem
-    // 3. zfs fails
-    return snap, errors.Wrapf(err, "unable to create snapshot %q", snapshotName)
-  }
+	// run command
+	if _, err := cmd.Output(); err != nil {
+		// known ways to fail
+		// 1. snapshot already exists
+		// 2. snapshot on non-existing filesystem
+		// 3. zfs fails
+		return snap, errors.Wrapf(err, "unable to create snapshot %q", snapshotName)
+	}
 
-  // retrieve the newly created snapshot
-  snap, err = z.GetSnapshot(snapshotName)
-  if err != nil {
-    return snap, errors.Wrapf(err, "unable to retrieve snapshot %q after creation", snap.Name)
-  }
+	// retrieve the newly created snapshot
+	snap, err = z.GetSnapshot(snapshotName)
+	if err != nil {
+		return snap, errors.Wrapf(err, "unable to retrieve snapshot %q after creation", snap.Name)
+	}
 
-  return snap, nil
+	return snap, nil
 }
-
 
 // Filesystems will return an map of filesystems on the zpool
 func (z Zpool) ListFilesystems() (l Filesystems, err error) {
@@ -199,7 +198,7 @@ func (z Zpool) ListFilesystems() (l Filesystems, err error) {
 
 		switch property {
 		case "origin":
-		  ds.Origin = value
+			ds.Origin = value
 		case "guid":
 			ds.GUID = value
 		case "createtxg":

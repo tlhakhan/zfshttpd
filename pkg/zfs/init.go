@@ -1,9 +1,9 @@
 package zfs
 
 import (
-  "bufio"
-  "io"
+	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -82,13 +82,13 @@ func getCommandString(cmd *exec.Cmd) string {
 }
 
 func logPipe(r io.ReadCloser, format string, message ...interface{}) chan bool {
-        done := make(chan bool)
-        go func() {
-                in := bufio.NewScanner(r)
-                for in.Scan() {
-                        log.Printf("%s: %s", fmt.Sprintf(format, message...), in.Text())
-                }
-                done <- true
-        }()
-        return done
+	done := make(chan bool)
+	go func() {
+		in := bufio.NewScanner(r)
+		for in.Scan() {
+			log.Printf("%s: %s", fmt.Sprintf(format, message...), in.Text())
+		}
+		done <- true
+	}()
+	return done
 }
