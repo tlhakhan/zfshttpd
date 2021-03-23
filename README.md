@@ -3,5 +3,5 @@ zfshttpd is an idea around transferring ZFS datasets using HTTP protocol.  This 
 
 
 # TODO
-- [] Presenting a ZFS snapshot as a read-only filesystem.
+- [ ] Presenting a ZFS snapshot as a read-only filesystem.
 
