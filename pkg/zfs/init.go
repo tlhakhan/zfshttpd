@@ -14,22 +14,21 @@ import (
 const zfsPath = "/usr/sbin/zfs"
 const zpoolPath = "/usr/sbin/zpool"
 
-// zfs module was initialized
-// perform pre-flight checks
+// perform pre-flight checks to sufficiently use this module
 func init() {
 
 	var err error
 
 	// zfs check
+  // check if the zfs binary exists 
+  // check if success on `zfs version`
 	{
-		// does zfs exist?
 		_, err = os.ReadFile(zfsPath)
 		if err != nil {
 			log.Printf("%s not found", zfsPath)
 			log.Fatal(err)
 		}
 
-		// does zfs work?
 		cmd := exec.Command("zfs", "version")
 		cmdString := getCommandString(cmd)
 		stdout, err := cmd.StdoutPipe()
@@ -48,16 +47,16 @@ func init() {
 	}
 
 	// check zpool
-	{
-		// does zpool exist?
+	// check if the zpool binary exists 
+  // check if success on `zpool version`
+  {
 		_, err = os.ReadFile(zpoolPath)
 		if err != nil {
 			log.Printf("%s not found", zpoolPath)
 			log.Fatal(err)
 		}
 
-		// does zpool work?
-		cmd := exec.Command(zpoolPath, "status", "-x")
+		cmd := exec.Command(zpoolPath, "version")
 		cmdString := getCommandString(cmd)
 
 		stdout, err := cmd.StdoutPipe()
@@ -75,13 +74,16 @@ func init() {
 	}
 }
 
+// getCommandString returns a string of the command and args of a *exec.Cmd type
 func getCommandString(cmd *exec.Cmd) string {
 	basename := path.Base(cmd.Path)
 	args := strings.Join(cmd.Args[1:], " ")
 	return fmt.Sprintf("%s %s", basename, args)
 }
 
-func logPipe(r io.ReadCloser, format string, message ...interface{}) chan bool {
+// logPipe wraps an io.ReaderCloser with a prefixed message and outputs to log.Printf.
+// logPipe returns a done channel of type bool to signal when the io.ReaderCloser closes.
+func logPipe(r io.ReaderCloser, format string, message ...interface{}) chan bool {
 	done := make(chan bool)
 	go func() {
 		in := bufio.NewScanner(r)
