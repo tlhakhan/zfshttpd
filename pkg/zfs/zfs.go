@@ -38,9 +38,7 @@ func New(zpool string) (z Zpool, err error) {
 		return z, err
 	}
 
-	// set name
-	z.Name = zpool
-	return z, nil
+	return Zpool{ Name: zpool }, nil
 
 }
 
