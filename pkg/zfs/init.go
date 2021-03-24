@@ -81,9 +81,9 @@ func getCommandString(cmd *exec.Cmd) string {
 	return fmt.Sprintf("%s %s", basename, args)
 }
 
-// logPipe wraps an io.ReaderCloser with a prefixed message and outputs to log.Printf.
-// logPipe returns a done channel of type bool to signal when the io.ReaderCloser closes.
-func logPipe(r io.ReaderCloser, format string, message ...interface{}) chan bool {
+// logPipe wraps an io.ReadCloser with a prefixed message and outputs to log.Printf.
+// logPipe returns a done channel of type bool to signal when the io.ReadCloser closes.
+func logPipe(r io.ReadCloser, format string, message ...interface{}) chan bool {
 	done := make(chan bool)
 	go func() {
 		in := bufio.NewScanner(r)
