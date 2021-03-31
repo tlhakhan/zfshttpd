@@ -1,7 +1,6 @@
 # README
-zfshttpd is an idea around transferring ZFS datasets using HTTP protocol.  This would allow easy sharing of datasets.
-
+zfshttpd is an idea around transferring ZFS datasets using the HTTP protocol.
 
 ## TODO
-- [ ] Presenting a ZFS snapshot as a read-only filesystem.
+- [ ] Integrate with a Caddyfile
 
