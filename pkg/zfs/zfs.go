@@ -1,3 +1,4 @@
+// Package zfs provides a library to manage ZFS datasets on the host system.
 package zfs
 
 import (

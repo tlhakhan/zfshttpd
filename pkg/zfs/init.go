@@ -14,7 +14,7 @@ import (
 const zfsPath = "/usr/sbin/zfs"
 const zpoolPath = "/usr/sbin/zpool"
 
-// perform pre-flight checks to sufficiently use this module
+// Perform pre-flight checks to sufficiently use this module.
 func init() {
 
 	var err error
