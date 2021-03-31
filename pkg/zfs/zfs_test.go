@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-var zpoolName string = "tank"
+var zpoolName string = "test_zpool"
 var z Zpool
 
 func TestMain(m *testing.M) {
