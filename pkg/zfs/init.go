@@ -20,8 +20,8 @@ func init() {
 	var err error
 
 	// zfs check
-  // check if the zfs binary exists 
-  // check if success on `zfs version`
+	// check if the zfs binary exists
+	// check if success on `zfs version`
 	{
 		_, err = os.ReadFile(zfsPath)
 		if err != nil {
@@ -47,9 +47,9 @@ func init() {
 	}
 
 	// check zpool
-	// check if the zpool binary exists 
-  // check if success on `zpool version`
-  {
+	// check if the zpool binary exists
+	// check if success on `zpool version`
+	{
 		_, err = os.ReadFile(zpoolPath)
 		if err != nil {
 			log.Printf("%s not found", zpoolPath)

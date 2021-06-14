@@ -39,7 +39,7 @@ func New(zpool string) (z Zpool, err error) {
 		return z, err
 	}
 
-	return Zpool{ Name: zpool }, nil
+	return Zpool{Name: zpool}, nil
 
 }
 
