@@ -7,9 +7,13 @@ setup:
 
 test:
 	@echo Running Go tests
-	go test -v ./pkg/zfs
+	go test -race -v ./pkg/zfs
 
 clean:
 	@echo Cleaning up dependencies
 	zpool destroy test_zpool
 	rm -f /tmp/disk1
+
+gofmt:
+	@echo Syntax formatting go code
+	find ./pkg ./cmd -name "*.go" | xargs -n1 go fmt
